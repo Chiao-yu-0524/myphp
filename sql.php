@@ -1,4 +1,3 @@
 <?php
-
-$mysqli = new mysqli('localhost','root','','CY');
-$mysqli->set_charset('utf8');
+$mysqli = new mysqli('localhost', 'root', '', 'cy');
+$mysqli->set_charset('utf-8');
