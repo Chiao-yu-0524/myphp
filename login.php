@@ -1,9 +1,8 @@
 <form method="get" action="checkAccount.php">
-
-    Account: <input type="text" id="account" name="account"  />
+    Account: <input type="text" name="account"><br>
     Password: <input type="password" name="passwd" /><br>
     <input type="submit" value="Login" />
-    <button type="button" onclick="location.href='register.php'"/>註冊新會員</button>
-
-
+    <button type="button" onclick="location.href='register.php'" >
+    Add Account
+    </button>
 </form>

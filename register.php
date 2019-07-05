@@ -1,33 +1,24 @@
 <?php
     include_once 'sql.php';
-
     if (isset($_REQUEST['account'])){
         $account = $_REQUEST['account'];
         $passwd = $_REQUEST['passwd'];
         $realname = $_REQUEST['realname'];
-
-        $passwd = password_hash($passwd , PASSWORD_DEFAULT); //加密
-        
-        $icon = null ;   //預設值
-        if ($_FILES['icon']['error'] == 0){   //圖檔是否上傳
-            file_get_contents($_FILES['icon']['tmp_name']);
+        $passwd = password_hash($passwd, PASSWORD_DEFAULT); //加密
+        $icon = null;
+        if ($_FILES['icon']['error'] == 0){
+            $icon = addslashes(file_get_contents($_FILES['icon']['tmp_name']));
         }
-
-        $sql = "INSERT INTO member (account,passwd,realname,icon) VALUE " .
-            "('{$account}','{$passwd}','{$realname}','{$icon}')";
-
+        $sql = "INSERT INTO member (account,passwd,realname,icon) VALUES " . 
+              "('{$account}','{$passwd}','{$realname}','{$icon}')";
         if ($mysqli->query($sql)){
-            header('localhost','login.php');
-            //echo '新增成功';
+            header('Location: login.php');
+            echo 'OK';
         }else{
-            echo '新增失敗', $sql;
+            echo 'ERROR:' . $sql;
         }
     }
-
-    
-
 ?>
- 
 
 <script>
     // XML Object
@@ -35,11 +26,11 @@
     let isDataOK = false;
     xhttp.onreadystatechange = function(){
         if (xhttp.readyState == 4 && xhttp.status == 200){
-            if (xhttp.responseText == 0){
-                document.getElementById('mesg').innerHTML = '檢查ＯＫ';
+            if (xhttp.responseText == 0){ //圖檔是否上傳
+                document.getElementById('mesg').innerHTML = 'OK';
                 isDataOK = true;
             }else{
-                document.getElementById('mesg').innerHTML = '檢查失敗';
+                document.getElementById('mesg').innerHTML = 'XX';
             }
         }
     }
@@ -56,7 +47,8 @@
 
 <form method='post' action="register.php" onsubmit="return isSubmit();" 
     enctype="multipart/form-data">
-    Account: <input type="text" id="account" name="account" onchange="isNewAccount()" /><span id='mesg'></span>
+    Account: <input type="text" id="account" name="account" onchange="isNewAccount()" />
+    <span id='mesg'></span>
     <br>
     Password: <input type="password" name="passwd" /><br>
     Realname: <input type="text" name="realname" /><br>
